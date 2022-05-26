@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:hive/hive.dart';
 import 'package:hive_universal_cache/hive_universal_cache.dart';
-import 'package:hive_universal_cache_example/json_cache.dart';
+
+import './json_cache.dart';
 
 Future<JsonTestModel?> hasDataChanged(
     {required JsonTestModel data, required String key}) async {
