@@ -16,24 +16,39 @@ know whether this package might be useful for them.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+A general framework for caching dart object model in Hive.
+This package currently support *JSON parsable* objects and, Hive types.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To start using the package go through [Hive basics](https://pub.dev/packages/hive)
+
+To utilize this package **register your data models** before initializing the Cache Store.
+Also, don't forget to initialize *Hive* beforehand.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+1. Initializing store JSON Parsable Object and, Hive Typed Object.
 
 ```dart
-const like = 'sample';
+import 'package:hive_universal_cache/hive_universal_cache.dart';
+final store = CacheStore(name: "test", policy: CachePolicy.main);
+CacheTypeRegistry.instance.registerJsonAdapter<TestModel>(TestModel.fromJson);
+CacheTypeRegistry.instance.registerHiveTypeAdapter<HiveTestModel>(HiveTestModelAdapter());
+store.init();
 ```
+
+2. Set and, Get example
+```dart
+await store.set<TestModel>("test", TestModel(key: "test"));
+final data = await store.get<TestModel>("test");
+```
+
+For more detailed examples, kindly go to
+[Examples](https://github.com/Vishal07051999/hive_universal_cache/tree/main/example)
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+This package is just on the initial phase, next inclusions will be :
+1. Wrapper over [http](https://pub.dev/packages/http) to directly put cacheable content.
+2. Adding support for Images and, Files.

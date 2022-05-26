@@ -39,15 +39,14 @@ class NestedTestModel {
   }
 }
 
-Future<bool> invalidateCache<TestModel>(
-    TestModel data, String key, CacheStore store) async {
-  await store.delete(key);
-  return true;
+Future<TestModel?> invalidateCache(
+    {required TestModel data, required String key}) async {
+  return TestModel(key: "changed");
 }
 
-Future<bool> invalidateCacheNoUpdate<TestModel>(
-    TestModel data, String key, CacheStore store) async {
-  return false;
+Future<TestModel?> invalidateCacheNoUpdate(
+    {required TestModel data, required String key}) async {
+  return null;
 }
 
 void main() async {
@@ -105,7 +104,9 @@ void main() async {
         await store.get<TestModel>("test", cacheInvalidation: invalidateCache);
     sleep(const Duration(seconds: 1));
     expect(data?.key, "test");
-    expect(await store.getLength(), 0);
+    final changedData =
+        await store.get<TestModel>("test", cacheInvalidation: invalidateCache);
+    expect(changedData!.key, "changed");
   });
 
   test('cache invalidation no update', () async {

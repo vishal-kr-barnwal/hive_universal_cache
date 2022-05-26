@@ -12,8 +12,12 @@ import 'model/cache_type.dart';
 
 /// TypeDef for invalidation function which you can pass in get method to run
 /// while fetching data from cache in certain interval of time
-typedef HasDataChanged<T> = Future<bool> Function<T>(
-    T data, String key, CacheStore store);
+///
+/// [data] is the cached value that you will get for the [key]
+/// It should return either updated value or,
+/// null if nothing has changed.
+typedef HasDataChanged<T> = Future<T?> Function(
+    {required T data, required String key});
 
 /// Object to access specific [CacheStore]
 class CacheStore {
@@ -81,7 +85,9 @@ class CacheStore {
   /// [cacheInvalidation] is the optional parameter.
   /// It gets executed after certain invalidationInterval which is defined
   /// at [policy]
-  Future<T?> get<T>(String key, {HasDataChanged? cacheInvalidation}) async {
+  /// [cacheInvalidation] runs after returning the cached data.
+  /// It will return the updated data the next time you will hit.
+  Future<T?> get<T>(String key, {HasDataChanged<T>? cacheInvalidation}) async {
     final resolver = _getResolver<T>();
     final item = _box.get(_generateHiveKey(key));
     if (item != null) {
@@ -131,16 +137,16 @@ class CacheStore {
   }
 
   void _invalidateCache<T>(
-      ItemCache item, HasDataChanged? hasDataChanged) async {
+      ItemCache item, HasDataChanged<T>? hasDataChanged) async {
     if (hasDataChanged != null &&
         item.lastValidated
                 .add(policy.invalidationInterval)
                 .compareTo(DateTime.now()) <
             1) {
       final resolver = _getResolver<T>();
-      final cacheUpdated = await hasDataChanged<T>(
-          resolver.cacheDataToType(item.data), item.key, this);
-      if (!cacheUpdated) {
+      final updatedCache = await hasDataChanged(
+          data: resolver.cacheDataToType(item.data), key: item.key);
+      if (updatedCache == null) {
         _box.put(
             _generateHiveKey(item.key),
             ItemCache(
@@ -149,6 +155,8 @@ class CacheStore {
               expireOn: item.expireOn,
               data: item.data,
             ));
+      } else {
+        await this.set(item.key, updatedCache);
       }
     }
   }
