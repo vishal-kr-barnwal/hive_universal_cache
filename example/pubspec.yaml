@@ -7,7 +7,7 @@ environment:
 
 dependencies:
   hive: ^2.0.5
-  hive_universal_cache: ^0.1.0
+  hive_universal_cache: ^0.2.0
 
 dev_dependencies:
   lints: ^2.0.0
