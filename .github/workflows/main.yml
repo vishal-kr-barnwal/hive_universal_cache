@@ -1,0 +1,53 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Test
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      - name: Flutter action
+        # You may pin to the exact commit or the version.
+        # uses: subosito/flutter-action@d8687e6979e8ef66d2b2970e2c92c1d8e801d7bf
+        uses: subosito/flutter-action@v2.4.0
+        
+      - name: Pub Get
+        run: flutter pub get
+      
+      - name: Analyze Dart
+        # You may pin to the exact commit or the version.
+        # uses: zgosalvez/github-actions-analyze-dart@524d7c3e24b8bd8feab6c5513871a6bc87b2d97b
+        uses: zgosalvez/github-actions-analyze-dart@v1.6.1
+        with:
+          # The action fails if any warning was found. This will always fail on errors. Optional. Default: `false`
+          fail-on-warnings: true
+        
+      - name: Test app
+        run: flutter test --coverage
+      
+      - name: Codecov
+        # You may pin to the exact commit or the version.
+        # uses: codecov/codecov-action@81cd2dc8148241f03f5839d295e000b8f761e378
+        uses: codecov/codecov-action@v3.1.0
+        with: 
+          token: ${{ secrets.CODECOV_TOKEN }} 
+          file: coverage/lcov.info

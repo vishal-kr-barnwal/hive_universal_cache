@@ -1,0 +1,22 @@
+name: hive_universal_cache
+description: A new Dart package to power cache via Hive.
+version: 0.1.0
+repository: https://github.com/Vishal07051999/hive_universal_cache.git
+issue_tracker: https://github.com/Vishal07051999/hive_universal_cache/issues
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  hive: ^2.0.5
+  json_annotation: ^4.4.0
+  crypto: ^3.0.2
+
+dev_dependencies:
+  lints: ^2.0.0
+  hive_generator:
+  build_runner:
+  test: ^1.16.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
