@@ -1,5 +1,5 @@
 name: hive_universal_cache
-description: A new Dart package to power cache via Hive.
+description: A general framework for caching dart object model in Hive. This package currently support JSON parsable objects and, Hive types.
 version: 0.1.0
 repository: https://github.com/Vishal07051999/hive_universal_cache.git
 issue_tracker: https://github.com/Vishal07051999/hive_universal_cache/issues
