@@ -8,3 +8,7 @@
 * Added support for Hive Type (Adapter)
 * Registry for registering custom model
 * All models must register
+
+## 0.2.1
+
+* Updated README.md.

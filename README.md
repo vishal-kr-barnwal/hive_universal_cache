@@ -11,13 +11,15 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages). 
 -->
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A general framework for caching dart object model in Hive.
 
 ## Features
 
-A general framework for caching dart object model in Hive.
 This package currently support *JSON parsable* objects and, Hive types.
+
+It has a background Cache Invalidation support at the time of fetching the data.
+
+It also implements TTL in over the Hive framework.
 
 ## Getting started
 
